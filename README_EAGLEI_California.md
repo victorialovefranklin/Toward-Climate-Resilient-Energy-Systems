@@ -117,7 +117,7 @@ Computed by **FEMA region × year**; **Region IX** (includes CA) improves over *
 ---
 
 ## Access & citation (provide)
-- **Historic dataset (public):** Figshare — DOI: **10.6084/m9.figshare.24237376**  
+- **Historic dataset (public):** Figshare — DOI: **10.6084/m9.figshare.24237376** https://figshare.com/articles/dataset/The_Environment_for_Analysis_of_Geo-Located_Energy_Information_s_Recorded_Electricity_Outages_2014-2022/24237376  
 - **Reference publication:** Brelsford, C., Tennille, S., Myers, A., *et al.* (2024). *A dataset of recorded electricity outages by United States county, 2014–2022.* **Scientific Data**, 11, 271. https://doi.org/10.1038/s41597-024-03095-5
 
 > **Note:** The live EAGLE-I GIS dashboard is **restricted** to government and approved emergency-management partners; the Figshare archive provides the **historical** data used here.
