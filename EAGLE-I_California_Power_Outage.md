@@ -55,6 +55,11 @@ Citation: Brelsford, Christa; Tennille, Sarah; Myers, Aaron; Chinthavali, Supriy
 - `customers_out` — customers without power (integer; **0s are not included**)  
 - `run_start_time` — UTC timestamp (`MM/DD/YY HH:MM`)
 
+
+ EAGLE-I California poeOutage 
+
+
+
 **Auxiliaries:**
 - `MCC.csv`: `County_FIPS`, `Customers`  
 - `coverage_history.csv`: `year`, `state`, `total_customers`, `min_covered`, `max_covered`, `min_pct_covered`, `max_pct_covered`  
