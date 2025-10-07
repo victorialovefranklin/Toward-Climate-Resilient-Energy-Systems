@@ -1,3 +1,17 @@
+The Environment for Analysis of Geo-Located Energy Information’s Recorded Electricity Outages 2014-2024
+
+The core of the provided dataset includes eight years of power outage information at the county level from 2014 to 2024 at 15-minute intervals collected from utility’s public outage maps on their websites by the EAGLE-I program at ORNL. Three supplementary files are included to augment the power outage data files. The first file includes the customer coverage rate of each state from 2018-2022. The second file provides the modeled number of electric customers per county as of 2022. The third presents our Data Quality Index and the four sub-components by year by FEMA Region for 2018-2022. UPDATE 2/16/2023: Added 2023 outage data and Uri_Map.R and DQI_processing.R files have been added. They were used to create graphics in associated works.
+UPDATE 4/10/2025: Added 2024 outage data.
+
+Funding
+Department of Energy Office of Cybersecurity, Energy Security, and Emergency Response (DOE CESER)
+Keywords
+electricity outage
+energy resilience
+extreme weather
+
+Brelsford, Christa; Tennille, Sarah; Myers, Aaron; Chinthavali, Supriya; Tansakul, Varisara; Denman, Matthew; et al. (2023). The Environment for Analysis of Geo-Located Energy Information’s Recorded Electricity Outages 2014-2024. figshare. Dataset. https://doi.org/10.6084/m9.figshare.24237376.v3 
+
 # County-Level Power Outage Dataset — **California Focus (2014–2022)**
 
 **Based on:** Brelsford et al., *Scientific Data* (2024), DOI: 10.1038/s41597-024-03095-5  
