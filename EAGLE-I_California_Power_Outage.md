@@ -89,7 +89,7 @@ Citation: Brelsford, Christa; Tennille, Sarah; Myers, Aaron; Chinthavali, Supriy
 
 ---
 
-## 🔍 Additional Notes
+## Additional Notes
 - **Unmonitored Utilities:** ≈ 8 % of U.S. customers (mostly rural / municipal) outside monitored feeds.  
 - **Geographic Baseline:** Uses EIA-861 and HIFLD boundaries (*customers ≠ population*).  
 - **Operational Interruptions:** Any utility website outage creates a synchronized data void in EAGLE-I.  
@@ -98,7 +98,7 @@ Citation: Brelsford, Christa; Tennille, Sarah; Myers, Aaron; Chinthavali, Supriy
 
 ---
 
-## ✅ Summary Assessment (Based on Source Report)
+## Summary Assessment (Based on Source Report)
 - **Robust, validated, and improving dataset** — most issues stem from known operational limitations, not data corruption.  
 - **2014–2016:** Incomplete baseline (pilot coverage).  
 - **2017–2020:** Substantial expansion; periodic parser corrections.  
@@ -106,6 +106,42 @@ Citation: Brelsford, Christa; Tennille, Sarah; Myers, Aaron; Chinthavali, Supriy
 - **2023–2024:** Ongoing data ingestion; recent months may show trailing incompleteness pending ORNL verification.  
 
 ---
+
+## 🧩 What Does “Parse” Mean?
+
+### 🔹 Simple Definition
+To **parse** means to **read, interpret, and convert raw data into a structured format** that a computer program can understand and process efficiently.
+
+---
+
+### ⚙️ In the Context of EAGLE-I
+In the **EAGLE-I Power Outage Dataset**, the system *parses* incoming data every 15 minutes from public utility outage maps and web feeds.  
+
+This process involves:
+1. **Downloading** raw data from utility sources — often in **HTML**, **JSON**, or **map (GIS)** formats.  
+2. **Extracting** key variables such as:  
+   - County name  
+   - FIPS code  
+   - Customers out  
+   - Timestamp  
+3. **Converting and storing** those values in a structured database table for analysis and visualization.
+
+---
+
+### What a “Parser Error” Means
+A **parser error** occurs when the system encounters **unexpected, missing, or malformed information** and fails to interpret it correctly.
+
+**Common causes include:**
+- A utility changes its outage map format (e.g., renames a field or switches to a new API).  
+- The web page or data feed is temporarily unavailable.  
+- The feed returns **incomplete** or **invalid** JSON/XML data.  
+- The data arrives mid-update, creating **inconsistent or duplicated tags**.  
+
+---
+
+### In Summary
+- **Parsing** = translating messy or raw source data into clean, structured records.  
+- **Parser errors** = moments when that translation process fails due to data or connection issues.  
 
 ## Producer & purpose (California relevance)
 - **Producer:** Oak Ridge National Laboratory (ORNL) for **DOE-CESER** via **EAGLE-I**.  
