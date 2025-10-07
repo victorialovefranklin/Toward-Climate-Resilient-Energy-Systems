@@ -107,14 +107,12 @@ Citation: Brelsford, Christa; Tennille, Sarah; Myers, Aaron; Chinthavali, Supriy
 
 ---
 
-## 🧩 What Does “Parse” Mean?
-
-### 🔹 Simple Definition
+## What Does “Parse” Mean?
 To **parse** means to **read, interpret, and convert raw data into a structured format** that a computer program can understand and process efficiently.
 
 ---
 
-### ⚙️ In the Context of EAGLE-I
+### In the Context of EAGLE-I
 In the **EAGLE-I Power Outage Dataset**, the system *parses* incoming data every 15 minutes from public utility outage maps and web feeds.  
 
 This process involves:
