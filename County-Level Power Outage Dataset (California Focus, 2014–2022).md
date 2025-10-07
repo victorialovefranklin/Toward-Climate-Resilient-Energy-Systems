@@ -108,33 +108,6 @@ Computed by **FEMA region/year**; **Region IX** (includes CA) improves through 2
 
 ---
 
-## Python Quickstart
-
-### Load and Merge Data
-
-```python
-import pandas as pd
-
-outages = pd.read_csv("eaglei_outages_2022.csv")
-mcc = pd.read_csv("MCC.csv")
-
-df = outages.merge(mcc, on="county_fips", how="left")
-df["pct_out"] = (df["customers_out"] / df["modeled_customers"]) * 100
-print(df.head())
-```
-
-### Compute Data Quality Index (DQI)
-
-```python
-def compute_dqi(S, E, C, P):
-    return 0.4*S + 0.3*E + 0.2*C + 0.1*P
-
-example = {"S": 95, "E": 92, "C": 90, "P": 100}
-print(compute_dqi(**example))
-```
-
----
-
 ## Citation
 
 Brelsford, C., Tennille, S., Myers, A., et al. (2024). *A dataset of recorded electricity outages by United States county, 2014–2022.* **Scientific Data**, 11, 271. https://doi.org/10.1038/s41597-024-03095-5
