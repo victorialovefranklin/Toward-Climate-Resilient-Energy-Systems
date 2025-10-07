@@ -67,9 +67,6 @@ These resources provide full access to **historic outage data** and detailed doc
 - **Geographic normalization:** points/ZIP/polygons → **county** level.
 - **Coverage growth:** counties without data fell from **1,072 (2014)** to **182 (2022)**.
 
-### Error Monitoring
-Common collection issues (parser/connection/timeout) are tracked and corrected; **privileged users can flag/patch** gaps in near real-time (cf. paper Table 3).
-
 ---
 
 ## Estimating Total Customers per County
