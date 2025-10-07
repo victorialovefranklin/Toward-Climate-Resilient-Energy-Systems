@@ -24,6 +24,24 @@ EAGLE-I supports decision-makers (**DOE, FEMA, DHS, NSC, NERC**) and has been us
 
 ---
 
+## EAGLE-I™ GIS Platform Access
+
+**EAGLE-I™** is an **interactive Geographic Information System (GIS)** that enables users to visualize and analyze the nation’s **energy infrastructure** across multiple sectors.  
+
+Through a single visualization platform, users can view and map **electric, petroleum, and natural gas** assets and monitor **near real-time informational updates** across these sectors.
+
+- Platform: [DOE CESER EAGLE-I™ GIS](https://eagle-i.doe.gov/)  
+- **Capabilities:**
+  - Real-time monitoring and situational awareness for critical energy infrastructure.  
+  - Outage tracking and visualization for electric utilities.  
+  - Integration of petroleum and natural gas infrastructure data.  
+  - Advanced GIS mapping with sector overlays.
+
+> To access the EAGLE-I GIS dashboard, users must **sign up for an account and obtain approval** through the DOE CESER portal. Access is restricted to authorized personnel and approved researchers.
+
+
+---
+
 ## Data Sources (California Applications)
 
 - **Utility outage maps** parsed every 15 minutes (hundreds of utilities / multiple formats: JSON, eBill, IFactor, XML, HTML, etc.).  
