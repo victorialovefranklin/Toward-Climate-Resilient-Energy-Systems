@@ -56,14 +56,54 @@ Citation: Brelsford, Christa; Tennille, Sarah; Myers, Aaron; Chinthavali, Supriy
 - `run_start_time` — UTC timestamp (`MM/DD/YY HH:MM`)
 
 
- EAGLE-I California poeOutage 
+## Data Dictionary for EAGLE-I California Power Outages
+
+| **column**        | **type**       | **definition**                                                                                  | **example**             |
+|--------------------|----------------|--------------------------------------------------------------------------------------------------|--------------------------|
+| fips_code          | string(5)      | 5-digit county FIPS code (zero-padded).                                                         | 06073                    |
+| county             | string         | County name associated with the FIPS code (California counties).                                | San Diego                |
+| state              | string         | Two-letter state or territory abbreviation.                                                     | CA                       |
+| customers_out      | numeric        | Number of customers reported without power at the recorded timestamp.                           | 1243                     |
+| run_start_time     | datetime       | Timestamp when the outage snapshot was generated (local or UTC time, depending on source feed).  | 2023-10-05 14:15:00      |
 
 
+# EAGLE-I Dataset Gaps, Errors, and Missing Data (2014 – 2024)
 
-**Auxiliaries:**
-- `MCC.csv`: `County_FIPS`, `Customers`  
-- `coverage_history.csv`: `year`, `state`, `total_customers`, `min_covered`, `max_covered`, `min_pct_covered`, `max_pct_covered`  
-- `DQI.csv`: `fema`, `year`, `success_rate`, `percent_enabled`, `spatial_precision`, `cust_coverage`, `max_covered`, `total_customers`, `DQI`
+| **Category** | **Details / Findings (Based on ORNL EAGLE-I Report 2024)** | **Impact / Notes** |
+|---------------|-------------------------------------------------------------|--------------------|
+| **Temporal Coverage (2014–2024)** | Coverage expands from ≈ 2,100 U.S. counties in 2014 → > 3,000 by 2022. Some early years have incomplete utility participation. | 2014–2016 partial data; coverage stabilizes by 2018 for most states including CA. |
+| **County Coverage (California)** | By 2018 all CA counties represented; minor rural utilities may remain unmapped. | < 1 % of customers potentially unmonitored. |
+| **Parser & Connection Errors (2017–2022)** | ≈ 1 million total parser events logged as errors: `PARSER_ERROR`, `CONNECTION_ERROR`, `INVALID_LOCATION`, `TIMEOUT`, etc. | Caused by network timeouts, utility web map format changes, or high-traffic events. Most corrected within 15 minutes. |
+| **Short-Duration Outages** | Outages shorter than 15 min often under-represented due to sampling frequency. | Short outages may appear as missing or unrecorded. |
+| **Spatial Discrepancies** | County allocations based on point/polygon geometry; polygons crossing county lines split by area rather than population. | May slightly misallocate customers when utilities span multiple counties. |
+| **Temporal Gaps** | Parser downtimes during severe weather (e.g., Winter Storm Uri 2021) or maintenance cause brief gaps. | Typically 15–60 min; next collection cycle resumes automatically. |
+| **Data Quality Index (DQI)** | Implemented 2018–2022; measures success rate, coverage, precision, and uptime. Region IX (CA) shows continuous improvement. | Success rate and customer coverage > 90 % by 2022. |
+| **Spatial Precision** | Decline in 2019 as some utilities switched to coarser polygon feeds. | Minimal impact on county-level aggregation. |
+| **State / County Metadata** | Occasional missing `state` or `county` fields (< 1 %), mostly early years or multi-state feeds. | Retained via FIPS prefix “06” for CA filtering. |
+| **FIPS Code Missingness** | Early years lacked standardized FIPS mapping across utilities. | Standardized post-2017; missing < 0.5 % after 2018. |
+| **Customers_Out Missingness** | 2–5 % missing values when feeds disrupted or unreported. | Common during large wildfires or PSPS events. |
+| **Run_Start_Time Missingness** | < 0.5 % timestamps unparseable (DST shifts or network delay). | Treated as `NaN`; not imputed. |
+| **Zero vs Missing Distinction** | Dataset does not differentiate between true zero-outage and missing feed entries. | Interpret contextually via time continuity and county coverage. |
+| **Manual Corrections** | FEMA / DOE may apply unflagged manual edits during disasters. | Minor; not systematically distinguishable. |
+| **Validation Limitations** | No DQI before 2018; early data cannot be quantitatively scored. | Pre-2017 analyses require caution. |
+
+---
+
+## 🔍 Additional Notes
+- **Unmonitored Utilities:** ≈ 8 % of U.S. customers (mostly rural / municipal) outside monitored feeds.  
+- **Geographic Baseline:** Uses EIA-861 and HIFLD boundaries (*customers ≠ population*).  
+- **Operational Interruptions:** Any utility website outage creates a synchronized data void in EAGLE-I.  
+- **Correction Protocol:** Errors auto-logged and reviewed weekly by ORNL; persistent issues resolved in ETL updates.  
+- **Data Quality Improvements:** Steady improvement 2018 → 2022 across all FEMA regions (incl. California Region IX).  
+
+---
+
+## ✅ Summary Assessment (Based on Source Report)
+- **Robust, validated, and improving dataset** — most issues stem from known operational limitations, not data corruption.  
+- **2014–2016:** Incomplete baseline (pilot coverage).  
+- **2017–2020:** Substantial expansion; periodic parser corrections.  
+- **2021–2022:** Near-complete coverage with minor short-term gaps.  
+- **2023–2024:** Ongoing data ingestion; recent months may show trailing incompleteness pending ORNL verification.  
 
 ---
 
