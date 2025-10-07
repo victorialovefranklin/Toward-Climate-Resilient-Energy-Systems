@@ -18,27 +18,35 @@
 
 ## Background
 
-The **2003 Northeast Blackout** highlighted inadequate situational awareness, motivating DOE to build wide-area monitoring—eventually **EAGLE-I**.
+The **2003 Northeast Blackout** exposed the nation’s vulnerability to widespread power failures and underscored the lack of **real-time situational awareness** across the energy grid. In response, the **U.S. Department of Energy (DOE)** developed wide-area monitoring capabilities that evolved into the **Environment for Analysis of Geo-Located Energy Information (EAGLE-I)** system.
 
-EAGLE-I supports decision-makers (**DOE, FEMA, DHS, NSC, NERC**) and has been used during major events (e.g., **Winter Storm Uri 2021**, **Hurricane Ian 2022**, **Camp Fire 2018**).
+EAGLE-I provides a **federated, geospatially enabled infrastructure** for monitoring the status of energy assets and supporting cross-sector decision-making. The platform has been instrumental during major national emergencies such as **Winter Storm Uri (2021)**, **Hurricane Ian (2022)**, and the **Camp Fire (2018)**—enabling agencies including **DOE**, **FEMA**, **DHS**, **NSC**, and **NERC** to assess outage conditions, coordinate response, and manage recovery operations.
 
 ---
 
 ## EAGLE-I™ GIS Platform Access
 
-**EAGLE-I™** is an **interactive Geographic Information System (GIS)** that enables users to visualize and analyze the nation’s **energy infrastructure** across multiple sectors.  
+**EAGLE-I™** is an **interactive Geographic Information System (GIS)** developed by the DOE’s **Office of Cybersecurity, Energy Security, and Emergency Response (CESER)** and operated by **Oak Ridge National Laboratory (ORNL)**. The system allows authorized users to **visualize and analyze the nation’s energy infrastructure**—including **electric, petroleum, and natural gas networks**—within a single geospatial platform.
 
-Through a single visualization platform, users can view and map **electric, petroleum, and natural gas** assets and monitor **near real-time informational updates** across these sectors.
+Through EAGLE-I™, users can:
 
-- Platform: [DOE CESER EAGLE-I™ GIS](https://eagle-i.doe.gov/)  
-- **Capabilities:**
-  - Real-time monitoring and situational awareness for critical energy infrastructure.  
-  - Outage tracking and visualization for electric utilities.  
-  - Integration of petroleum and natural gas infrastructure data.  
-  - Advanced GIS mapping with sector overlays.
+- View and map **critical energy assets** across multiple sectors.  
+- Access **near real-time situational updates** on power outages and infrastructure disruptions.  
+- Integrate data from **utility reports, weather systems, and emergency response feeds**.  
+- Perform **advanced GIS mapping** with customizable overlays for resilience analysis.
 
-> To access the EAGLE-I GIS dashboard, users must **sign up for an account and obtain approval** through the DOE CESER portal. Access is restricted to authorized personnel and approved researchers.
+🔗 **Platform Access:** [DOE CESER EAGLE-I™ GIS Portal](https://eagle-i.doe.gov/)
 
+> ⚠️ **Access Notice:**  
+> EAGLE-I is a restricted system available only to **government employees** and **approved emergency management partners**.  
+> Academic or public researchers currently **cannot obtain direct access** to the live dashboard.
+
+However, the **historic EAGLE-I dataset (2014–2022)** is **publicly available** and suitable for academic and research use:
+
+- 📦 **Dataset Download:** [Figshare Repository (DOI: 10.6084/m9.figshare.24237376)](https://doi.org/10.6084/m9.figshare.24237376)  
+- 📘 **Reference Publication:** Brelsford, C., Tennille, S., Myers, A., *et al.* (2024). *A dataset of recorded electricity outages by United States county, 2014–2022.* *Scientific Data*, 11, 271. [https://doi.org/10.1038/s41597-024-03095-5](https://doi.org/10.1038/s41597-024-03095-5)
+
+These resources provide full access to **historic outage data** and detailed documentation of **EAGLE-I’s design, methodology, and quality assurance framework**, allowing researchers to reproduce analyses or build derivative models using open data.
 
 ---
 
