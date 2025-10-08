@@ -9,7 +9,7 @@
 **Access Level:** Public  
 **License:** Custom — For situational awareness and emergency management use  
 
-**Tags:** CalOES | Power Outage | ESF12 | PG&E | SCE | SDG&E | SMUD | PSPS | CAOpenData | Statewide Dataset  
+Tags: CalOES | Power Outage | ESF12 | PG&E | SCE | SDG&E | SMUD | PSPS | CAOpenData | Statewide Dataset  
 ---
 
 ### Overview
