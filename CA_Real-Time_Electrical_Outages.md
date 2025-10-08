@@ -7,14 +7,15 @@
 **Update Frequency:** Automatically updated every 15 minutes (“as needed”)  
 **Last Update:** August 19 2025 (4:57 PM CDT)  
 **Access Level:** Public  
-**License:** Custom — For situational awareness and emergency management use  
+**License:** Custom — For situational awareness and emergency management use
 
-Tags: CalOES | Power Outage | ESF12 | PG&E | SCE | SDG&E | SMUD | PSPS | CAOpenData | Statewide Dataset  
 ---
 
 ### Overview
 The **Cal OES Statewide Power Outages (View)** layer aggregates real-time outage information directly from California’s major utility public outage maps.  
-It provides **current, not historical**, statewide outage visibility and supports emergency-operations dashboards.
+It provides **current, not historical**, statewide outage visibility and supports emergency operations dashboards.
+
+**Tags:** CalOES | Power Outage | ESF12 | PG&E | SCE | SDG&E | SMUD | PSPS | CAOpenData | Statewide Dataset  
 
 #### Included Utilities
 - **Pacific Gas and Electric (PG&E)**  
