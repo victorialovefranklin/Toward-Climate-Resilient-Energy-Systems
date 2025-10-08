@@ -1,6 +1,6 @@
 # The Environment for Analysis of Geo-Located Energy Information (EAGLE-I) — Recorded Electricity Outages (2014–2024)
 
-## Overview
+### Overview
 The **EAGLE-I dataset** (Environment for Analysis of Geo-Located Energy Information) provides **county-level U.S. power outage data** from **2014 to 2024**, collected at **15-minute intervals** from utility public outage maps by the **EAGLE-I program at Oak Ridge National Laboratory (ORNL)**.
 
 Three supplementary files support interpretation and validation:
@@ -23,9 +23,7 @@ Brelsford, C., Tennille, S., Myers, A., Chinthavali, S., Tansakul, V., Denman, M
 **Scientific Data** (Nature Portfolio). DOI: [10.1038/s41597-024-03095-5](https://doi.org/10.1038/s41597-024-03095-5)
 
 ---
-
-## 🌎 County-Level Power Outage Dataset — *California Focus (2014–2024)*
-
+## Focus Study:*California Focus (2014–2024)*
 **Primary Source:** EAGLE-I (DOE-CESER / ORNL)  
 **Frequency:** 15-minute intervals  
 **Coverage:** ~92% of U.S. electric customers represented by 2022  
@@ -33,7 +31,7 @@ Brelsford, C., Tennille, S., Myers, A., Chinthavali, S., Tansakul, V., Denman, M
 
 ---
 
-## 📦 Public Dataset Files (Excerpt)
+## Public Dataset Files  
 
 | **File** | **Size** | **Rows** | **Notes** |
 |-----------|-----------|-----------|-----------|
@@ -52,7 +50,7 @@ Brelsford, C., Tennille, S., Myers, A., Chinthavali, S., Tansakul, V., Denman, M
 
 ---
 
-## 🧾 Column Names (All Outage Years)
+## Column Names (All Outage Years)
 
 | **Column** | **Type** | **Definition** | **Example** |
 |-------------|-----------|----------------|--------------|
@@ -63,90 +61,23 @@ Brelsford, C., Tennille, S., Myers, A., Chinthavali, S., Tansakul, V., Denman, M
 | `run_start_time` | datetime | Timestamp when the outage snapshot was generated (local or UTC). | `2023-10-05 14:15:00` |
 
 ---
+Methods: 
 
-## 🚧 EAGLE-I Dataset Gaps, Errors, and Missing Data (2014–2024)
+Data collection
+### How EAGLE-I Collects the Data
 
-| **Category** | **Details / Findings (Based on ORNL EAGLE-I Report, 2024)** | **Impact / Notes** |
-|---------------|-------------------------------------------------------------|--------------------|
-| **Temporal Coverage (2014–2024)** | Coverage expands from ≈ 2,100 U.S. counties in 2014 → > 3,000 by 2022. | 2014–2016 partial data; stable by 2018 for most states including CA. |
-| **County Coverage (CA)** | By 2018, all CA counties represented; minor rural utilities may remain unmapped. | < 1% of customers unmonitored. |
-| **Parser & Connection Errors (2017–2022)** | ≈ 1M total parser events (`PARSER_ERROR`, `CONNECTION_ERROR`, `TIMEOUT`, etc.). | Caused by network issues or format changes; most fixed within 15 min. |
-| **Short-Duration Outages** | Outages <15 min under-represented due to sampling frequency. | Short outages may appear missing. |
-| **Spatial Discrepancies** | County boundaries split by area rather than population. | Minor misallocations possible. |
-| **Temporal Gaps** | Gaps during severe weather (e.g., Winter Storm Uri 2021). | Typically 15–60 min; collection resumes automatically. |
-| **Data Quality Index (DQI)** | Implemented 2018–2022; measures success rate, coverage, and uptime. | Region IX (CA) > 90% coverage by 2022. |
-| **Spatial Precision** | Decline in 2019 from coarser polygon feeds. | Minimal county-level impact. |
-| **Metadata Missingness** | Occasional missing `state` or `county` fields (<1%). | Filtered via FIPS prefix “06”. |
-| **FIPS Code Missingness** | Early years lacked standardized mapping. | <0.5% missing post-2018. |
-| **Customers_Out Missingness** | 2–5% missing during feed disruptions or wildfires. | Common during PSPS events. |
-| **Run_Start_Time Missingness** | <0.5% unparseable timestamps (DST or delays). | Treated as NaN; not imputed. |
-| **Zero vs Missing** | Dataset doesn’t distinguish true zero vs missing feeds. | Contextual interpretation needed. |
-| **Manual Corrections** | FEMA/DOE may apply unflagged manual edits. | Minor impact. |
-| **Validation Limitations** | No DQI before 2018. | Pre-2017 data requires caution. |
+- **Collection method:** EAGLE-I automatically scrapes outage data from public utility web maps at **15-minute intervals**.  
+- **Feed content:** These maps display **active customer outages only** — they do **not** include metadata describing *why* an outage occurred.  
+- **System behavior:** As a result, **all service interruptions** visible on the utilities’ feeds are recorded as *customers without power*, regardless of whether they were **preventive (PSPS)** or **unexpected (incident outages)**.
+- 
+### The EAGLE-I dataset does not explicitly distinguish between:**
+1. **Planned Public Safety Power Shutoff (PSPS) events**, and  
+2. **Unplanned or emergency outage incidents** (e.g., storms, equipment failure, grid overload).
 
+All interruptions are recorded uniformly as `customers_out` based on utilities’ public outage maps, without a field specifying the cause or intent of the outage.
 ---
 
-## 🔍 Additional Notes
-- **Unmonitored Utilities:** ≈ 8% of U.S. customers (mostly rural/municipal) not represented.  
-- **Geographic Baseline:** Based on *EIA-861* and *HIFLD* boundaries (*customers ≠ population*).  
-- **Operational Interruptions:** Any utility website outage = synchronized data void.  
-- **Correction Protocol:** Errors auto-logged; ORNL resolves persistent issues in ETL updates.  
-- **Data Quality Improvements:** Continuous improvement 2018 → 2022 across FEMA Region IX (CA).
-
----
-
-## ✅ Summary Assessment
-- **Robust, validated, and improving dataset.**  
-- **2014–2016:** Incomplete pilot coverage.  
-- **2017–2020:** Expansion and stabilization.  
-- **2021–2022:** High completeness, minor short gaps.  
-- **2023–2024:** Ongoing ingestion; trailing incompleteness under review.  
-
----
-
-## 🧩 What Does “Parse” Mean?
-
-### 🔹 Simple Definition
-To **parse** means to **read, interpret, and convert raw data into a structured format** that a computer program can process efficiently.
-
----
-
-### ⚙️ In the Context of EAGLE-I
-EAGLE-I parses data every 15 minutes from public utility outage maps and feeds.
-
-**Process:**
-1. **Download** raw data (HTML, JSON, GIS).  
-2. **Extract** values: county name, FIPS, customers out, timestamp.  
-3. **Convert & store** these in structured database tables.
-
----
-
-### ⚠️ What a “Parser Error” Means
-A **parser error** occurs when data cannot be read or interpreted correctly.
-
-**Causes include:**
-- Utility changes data format or API endpoint.  
-- Feed or web page temporarily down.  
-- Incomplete or malformed JSON/XML.  
-- Data arrives mid-update → inconsistent tags.
-
-**In summary:**
-- **Parsing:** Translating messy raw feeds into structured records.  
-- **Parser errors:** Failures in that translation due to data or connection issues.
-
----
-
-## 🏗️ Data Sources for California Analysis
-
-- **Utility outage maps:** 15-min parsing (heterogeneous formats).  
-- **EIA Form 861:** Utility customer totals.  
-- **LandScan USA:** Day/night population estimates.  
-- **HIFLD:** Service territories.  
-- **FEMA Regions:** Used for DQI aggregation (Region IX includes CA).
-
----
-
-## 📊 Indicators and Derived Metrics
+## Indicators and Derived Metrics
 
 | **Indicator** | **Formula / Description** |
 |----------------|---------------------------|
@@ -158,13 +89,13 @@ A **parser error** occurs when data cannot be read or interpreted correctly.
 
 ---
 
-## 🧮 Estimating Modeled Customers per County
+## Estimating Modeled Customers per County
 EAGLE-I models customer counts where utilities don’t publish them, using:
 - **LandScan** population data  
 - **EIA-861** utility totals  
 - **HIFLD** service territory boundaries  
 
-Formula:  
+**Formula:**  
 `c_i = (p_i / P) × C`  
 where:  
 - `C` = total customers in utility’s service area  
@@ -173,7 +104,7 @@ where:
 
 ---
 
-## 📈 Data Quality Index (DQI, 2018–2022)
+## Data Quality Index (DQI, 2018–2022)
 Components & weights:
 - **S** = Success Rate (parser runs without error)  
 - **E** = Percent Enabled (active collection share)  
@@ -184,34 +115,14 @@ Components & weights:
 
 ---
 
-## ⚠️ Known Gaps & Cautions
-- Sub–15-minute outages may be missed (sampling cadence).  
-- Undercoverage for small/municipal/rural utilities (~8% of customers).  
-- Parser or website changes may cause temporary gaps.  
-- Modeled customers assume population proportionality — may misstate industrial areas.  
-- DQI available only from 2018–2022 (earlier years lack metrics).
 
 ---
 
-## 🔦 Understanding PSPS vs. Power Outage Events in EAGLE-I
 
-### The EAGLE-I dataset does not explicitly distinguish between:**
-1. **Planned Public Safety Power Shutoff (PSPS) events**, and  
-2. **Unplanned or emergency outage incidents** (e.g., storms, equipment failure, grid overload).
-
-All interruptions are recorded uniformly as `customers_out` based on utilities’ public outage maps, without a field specifying the cause or intent of the outage.
 
 ---
 
-### How EAGLE-I Collects the Data
-
-- **Collection method:** EAGLE-I automatically scrapes outage data from public utility web maps at **15-minute intervals**.  
-- **Feed content:** These maps display **active customer outages only** — they do **not** include metadata describing *why* an outage occurred.  
-- **System behavior:** As a result, **all service interruptions** visible on the utilities’ feeds are recorded as *customers without power*, regardless of whether they were **preventive (PSPS)** or **unexpected (incident outages)**.
-
----
-
-### 🔍 What the ORNL Report States
+### What the ORNL Report States
 According to the official report (Brelsford et al., *Scientific Data*, 2024, DOI: [10.1038/s41597-024-03095-5]):
 
 - Outages represent **“utility-reported customer interruptions”** aggregated by county and time.  
@@ -249,6 +160,77 @@ Combine EAGLE-I’s continuous outage records with **CAL FIRE**, **CAISO**, and 
 **In short:**  
 > EAGLE-I captures **all visible service interruptions** but does **not specify** whether they are *planned* PSPS events or *unplanned* outages.  
 > To distinguish them, analysts must **cross-reference external California PSPS and weather datasets.**
+
+
+
+---
+## EAGLE-I Dataset Gaps, Errors, and Missing Data (2014–2024)
+
+| **Category** | **Details / Findings (Based on ORNL EAGLE-I Report, 2024)** | **Impact / Notes** |
+|---------------|-------------------------------------------------------------|--------------------|
+| **Temporal Coverage (2014–2024)** | Coverage expands from about 2,100 U.S. counties in 2014 → > 3,000 by 2022. | 2014–2016 partial data; stable by 2018 for most states, including CA. |
+| **County Coverage (CA)** | By 2018, all CA counties represented; minor rural utilities may remain unmapped. | < 1% of customers unmonitored. |
+| **Parser & Connection Errors (2017–2022)** | about 1M total parser events (`PARSER_ERROR`, `CONNECTION_ERROR`, `TIMEOUT`, etc.). | Caused by network issues or format changes; most fixed within 15 min. |
+| **Short-Duration Outages** | Outages <15 min are under-represented due to sampling frequency. | Short outages may appear missing. |
+| **Spatial Discrepancies** | County boundaries split by area rather than population. | Minor misallocations are possible. |
+| **Temporal Gaps** | Gaps during severe weather (e.g., Winter Storm Uri 2021). | Typically 15–60 min; collection resumes automatically. |
+| **Data Quality Index (DQI)** | Implemented 2018–2022; measures success rate, coverage, and uptime. | Region IX (CA) > 90% coverage by 2022. |
+| **Spatial Precision** | Decline in 2019 from coarser polygon feeds. | Minimal county-level impact. |
+| **Metadata Missingness** | Occasional missing `state` or `county` fields (<1%). | Filtered via FIPS prefix “06”. |
+| **FIPS Code Missingness** | Early years lacked standardized mapping. | <0.5% missing post-2018. |
+| **Customers_Out Missingness** | 2–5% missing during feed disruptions or wildfires. | Common during PSPS events. |
+| **Run_Start_Time Missingness** | <0.5% unparseable timestamps (DST or delays). | Treated as NaN; not imputed. |
+| **Zero vs Missing** | The Dataset doesn’t distinguish true zero vs missing feeds. | Contextual interpretation needed. |
+| **Manual Corrections** | FEMA/DOE may apply unflagged manual edits. | Minor impact. |
+| **Validation Limitations** | No DQI before 2018. | Pre-2017 data requires caution. |
+
+---
+### Notes: 
+- What Does “Parse” Mean? To **parse** means to **read, interpret, and convert raw data into a structured format** that a computer program can process efficiently. In the Context of EAGLE-I, EAGLE-I parses data every 15 minutes from public utility outage maps and feeds.
+**Process:**
+1. **Download** raw data (HTML, JSON, GIS).  
+2. **Extract** values: county name, FIPS, customers out, timestamp.  
+3. **Convert & store** these in structured database tables.
+
+### What a “Parser Error” Means
+A **parser error** occurs when data cannot be read or interpreted correctly.
+**Causes include:**
+- Utility changes data format or API endpoint.  
+- Feed or web page is temporarily down.  
+- Incomplete or malformed JSON/XML.  
+- Data arrives mid-update → inconsistent tags.
+
+**In summary:**
+- **Parsing:** Translating messy raw feeds into structured records.  
+- **Parser errors:** Failures in that translation due to data or connection issues.
+---
+
+## Additional Notes
+- **Unmonitored Utilities:** About 8% of U.S. customers (mostly rural/municipal) are not represented.  
+- **Geographic Baseline:** Based on *EIA-861* and *HIFLD* boundaries (*customers ≠ population*).  
+- **Operational Interruptions:** Any utility website outage = synchronized data void.  
+- **Correction Protocol:** Errors auto-logged; ORNL resolves persistent issues in ETL updates.  
+- **Data Quality Improvements:** Continuous improvement 2018 → 2022 across FEMA Region IX (CA).
+
+---
+
+## Summary Assessment
+- **Robust, validated, and improving dataset.**  
+- **2014–2016:** Incomplete pilot coverage.  
+- **2017–2020:** Expansion and stabilization.  
+- **2021–2022:** High completeness, minor short gaps.  
+- **2023–2024:** Ongoing ingestion; trailing incompleteness under review.  
+
+---
+## 🏗️ Data Sources for California Analysis
+
+- **Utility outage maps:** 15-min parsing (heterogeneous formats).  
+- **EIA Form 861:** Utility customer totals.  
+- **LandScan USA:** Day/night population estimates.  
+- **HIFLD:** Service territories.  
+- **FEMA Regions:** Used for DQI aggregation (Region IX includes CA).
+
+---
 
 
 
