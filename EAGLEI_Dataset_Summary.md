@@ -38,7 +38,7 @@ This dataset represents one of the most comprehensive outage monitoring archives
 **Primary Source:** EAGLE-I (DOE-CESER / ORNL)  
 **Frequency:** 15-minute intervals  
 **Coverage:** About 92 % of U.S. electric customers (2022)  
-**Purpose:** Enables real-time situational awareness, resilience analysis, and longitudinal modeling across 58 California counties.
+**Purpose:** The EAGLE-I (2014–2024) dataset provides historical, validated, county-level power outage records across the U.S., including California, at 15-minute resolution.
 
 ---
 
