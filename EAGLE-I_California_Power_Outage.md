@@ -195,6 +195,65 @@ Components & weights:
 
 ---
 
+## 🔦 Understanding PSPS vs. Power Outage Events in EAGLE-I
+
+### The EAGLE-I dataset does not explicitly distinguish between:**
+1. **Planned Public Safety Power Shutoff (PSPS) events**, and  
+2. **Unplanned or emergency outage incidents** (e.g., storms, equipment failure, grid overload).
+
+All interruptions are recorded uniformly as `customers_out` based on utilities’ public outage maps, without a field specifying the cause or intent of the outage.
+
+---
+
+### How EAGLE-I Collects the Data
+
+- **Collection method:** EAGLE-I automatically scrapes outage data from public utility web maps at **15-minute intervals**.  
+- **Feed content:** These maps display **active customer outages only** — they do **not** include metadata describing *why* an outage occurred.  
+- **System behavior:** As a result, **all service interruptions** visible on the utilities’ feeds are recorded as *customers without power*, regardless of whether they were **preventive (PSPS)** or **unexpected (incident outages)**.
+
+---
+
+### 🔍 What the ORNL Report States
+According to the official report (Brelsford et al., *Scientific Data*, 2024, DOI: [10.1038/s41597-024-03095-5]):
+
+- Outages represent **“utility-reported customer interruptions”** aggregated by county and time.  
+- The EAGLE-I platform’s scope **does not include classification or root-cause tagging**.  
+- During major PSPS or wildfire prevention events, **utilities may pause reporting**, causing the feed to drop to zero or go missing temporarily.  
+  These appear as **NaN or zero-customer intervals**, not as a labeled PSPS event.
+
+---
+
+### Interpretation Guidance (for California Analysts)
+
+Analysts using EAGLE-I should interpret PSPS and unplanned outages by cross-referencing with additional datasets:
+
+| **Scenario** | **Recommended Interpretation** | **External Cross-Reference** |
+|---------------|--------------------------------|-------------------------------|
+| **Continuous zero or missing intervals** during known PSPS periods | Likely *planned Public Safety Power Shutoffs* | CAL FIRE PSPS logs, CPUC PSPS dataset |
+| **Sudden spikes** in `customers_out` followed by restoration | Likely *unplanned outage incidents* | NOAA storm reports, CAISO curtailment or grid event logs |
+| **Extended missing feeds** | May indicate intentional reporting suspension or website downtime | Utility maintenance logs, DOE CESER incident summaries |
+
+**Best practice:**  
+Combine EAGLE-I’s continuous outage records with **CAL FIRE**, **CAISO**, and **NOAA/NCEI** event data to classify outage types and improve resilience modeling accuracy.
+
+---
+
+### Summary
+| **Aspect** | **EAGLE-I Representation** | **Clarification** |
+|-------------|-----------------------------|-------------------|
+| Outage type field | ❌ Not provided | No field indicating PSPS vs. unplanned outage. |
+| Data source | Utility public outage maps | Cause metadata unavailable. |
+| PSPS periods | Often appear as data gaps or zero-customer intervals. | Requires external matching. |
+| True outage incidents | Reflected as non-zero `customers_out` values with timestamped restoration. | Represent emergency or equipment-related outages. |
+
+---
+
+**In short:**  
+> EAGLE-I captures **all visible service interruptions** but does **not specify** whether they are *planned* PSPS events or *unplanned* outages.  
+> To distinguish them, analysts must **cross-reference external California PSPS and weather datasets.**
+
+
+
 ## 🔗 Access & Citation
 **Historic Dataset (Public):**  
 [Figshare — DOI: 10.6084/m9.figshare.24237376](https://figshare.com/articles/dataset/The_Environment_for_Analysis_of_Geo-Located_Energy_Information_s_Recorded_Electricity_Outages_2014-2022/24237376)
