@@ -34,9 +34,9 @@ It provides **current, not historical**, statewide outage visibility and support
 
 ---
 
-### Purpose
-Developed by Cal OES as part of the Emergency Support Function 12 (ESF-12) program, this dataset delivers real-time situational awareness of power disruptions across California to support emergency-management and response coordination.
+**Purpose:** Developed by Cal OES as part of the Emergency Support Function 12 (ESF-12) program, this dataset delivers real-time situational awareness of power disruptions across California to support emergency-management and response coordination.
 The Cal OES — Statewide Power Outages (Real-Time) dataset captures live, event-based outage incidents updated hourly or more frequently, providing details such as Public Safety Power Shutoff (PSPS) events, start and end times, affected areas, and reported outage causes.
+
 ---
 
 ## Dataset Summary
