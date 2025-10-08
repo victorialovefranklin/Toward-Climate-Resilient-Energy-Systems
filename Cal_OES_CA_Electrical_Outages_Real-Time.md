@@ -9,6 +9,7 @@
 **Access Level:** Public  
 **License:** Custom — For situational awareness and emergency management use  
 
+**Tags:** CalOES | Power Outage | ESF12 | PG&E | SCE | SDG&E | SMUD | PSPS | CAOpenData | Statewide Dataset  
 ---
 
 ### Overview
@@ -32,13 +33,13 @@ It provides **current, not historical**, statewide outage visibility and support
 
 ---
 
-### ⚙️ Purpose
-Developed by Cal OES under the **Emergency Support Function 12 (ESF-12)** program to provide  
-real-time situational awareness of statewide power disruptions for emergency-management partners.
+### Purpose
+Developed by Cal OES as part of the Emergency Support Function 12 (ESF-12) program, this dataset delivers real-time situational awareness of power disruptions across California to support emergency-management and response coordination.
+The Cal OES — Statewide Power Outages (Real-Time) dataset captures live, event-based outage incidents updated hourly or more frequently, providing details such as Public Safety Power Shutoff (PSPS) events, start and end times, affected areas, and reported outage causes.
 
 ---
 
-### ⚠️ Limitations
+### Limitations
 - **No historical archive.** Represents *only* the most recent outage snapshot at any given time.  
 - **Accuracy varies by utility.** PG&E polygon data is approximate; other utilities report only point data.  
 - **Operational use only.** Intended for awareness, not for certified counts of affected customers.  
@@ -46,25 +47,16 @@ real-time situational awareness of statewide power disruptions for emergency-man
 
 ---
 
-### 📍 Spatial Domain
+### Spatial Domain
 - **Extent:** California statewide (≈ 31.69° N – 42.61° N, –125.18° W – –113.63° W)  
 - **Coordinate System:** WGS 84  
 - **Bounding Counties:** All 58 California counties  
 
 ---
 
-### 🧾 Citation
+### Citation
 Brelsford, C., et al. (2025). *Statewide Power Outages (Public View)* [Data set].  
 California Governor’s Office of Emergency Services (Cal OES).  
 Available at: [https://www.arcgis.com/home/item.html?id=439afad071eb4754903906aff1946719](https://www.arcgis.com/home/item.html?id=439afad071eb4754903906aff1946719)
 
----
-
-### 🔍 Analytical Relevance (for EAGLE-I Cross-Reference)
-- Provides **real-time incident visibility** (current outages only) to complement EAGLE-I’s **15-minute time-series archives**.  
-- Enables **county-level validation** of active outage magnitudes against EAGLE-I `customers_out` values.  
-- Because it lacks historical retention, analysts must **capture snapshots or use streaming APIs** for longitudinal comparison.
-
----
-
-**Tags:** CalOES | Power Outage | ESF12 | PG&E | SCE | SDG&E | SMUD | PSPS | CAOpenData | Statewide Dataset  
+ 
