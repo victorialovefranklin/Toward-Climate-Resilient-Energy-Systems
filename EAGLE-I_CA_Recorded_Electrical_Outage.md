@@ -1,8 +1,6 @@
-# ⚡ The Environment for Analysis of Geo-Located Energy Information (EAGLE-I) — Recorded Electricity Outages (2014–2024)
+# The Environment for Analysis of Geo-Located Energy Information (EAGLE-I) — Recorded Electricity Outages (2014–2024)
 
----
-
-## 📘 Overview
+## Overview
 The **EAGLE-I dataset** (Environment for Analysis of Geo-Located Energy Information) provides **county-level U.S. power outage data** from **2014 to 2024**, collected at **15-minute intervals** from utility public outage maps by the **EAGLE-I program at Oak Ridge National Laboratory (ORNL)**.
 
 Three supplementary files support interpretation and validation:
