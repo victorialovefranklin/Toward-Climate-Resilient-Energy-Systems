@@ -1,4 +1,4 @@
- ## ⚡ Cal OES — Statewide Power Outages (Public View)
+ ## Cal OES — Statewide Power Outages Dataset 
 
 **Source:** [California Governor’s Office of Emergency Services (Cal OES) GIS Division](https://www.arcgis.com/home/item.html?id=439afad071eb4754903906aff1946719)  
 **Metadata:** [FGDC-Compliant XML Metadata](https://www.arcgis.com/sharing/rest/content/items/439afad071eb4754903906aff1946719/info/metadata/metadata.xml?format=default&output=html)  
@@ -11,7 +11,7 @@
 
 ---
 
-### 🧭 Overview
+### Overview
 The **Cal OES Statewide Power Outages (View)** layer aggregates real-time outage information directly from California’s major utility public outage maps.  
 It provides **current, not historical**, statewide outage visibility and supports emergency-operations dashboards.
 
@@ -23,7 +23,7 @@ It provides **current, not historical**, statewide outage visibility and support
 
 ---
 
-### 🗺️ Layers
+### Layers
 | **Layer Name** | **Geometry Type** | **Description / Use** |
 |----------------|------------------|------------------------|
 | **Power Outage Incidents** | Point | Individual outage points from all utilities — shows approximate outage locations and drives dashboard totals. |
