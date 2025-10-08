@@ -1,4 +1,4 @@
- # Cal OES — Statewide Power Outages (Real-Time) Dataset 
+ # Cal OES Statewide Power Outages (Real-Time) Dataset 
 
 **Source:** [California Governor’s Office of Emergency Services (Cal OES) GIS Division](https://www.arcgis.com/home/item.html?id=439afad071eb4754903906aff1946719)  
 **Metadata:** [FGDC-Compliant XML Metadata](https://www.arcgis.com/sharing/rest/content/items/439afad071eb4754903906aff1946719/info/metadata/metadata.xml?format=default&output=html)  
