@@ -55,8 +55,16 @@ This schema aligns with:
 6. **California Public Utilities Commission (CPUC).** (2022). *Fire-Threat Maps and Fire Safety Rulemaking.*  
    [https://www.cpuc.ca.gov/industries-and-topics/wildfires/fire-threat-maps-and-fire-safety-rulemaking](https://www.cpuc.ca.gov/industries-and-topics/wildfires/fire-threat-maps-and-fire-safety-rulemaking)
 
-   **Created By:** 
-   Victoria Love Franklin 
-   Ph.D. Student & Researcher
-   School of Applied Computational Sciences 
-   Meharry Medical College 
+---
+
+**Created By:**
+
+**Victoria Love Franklin, Ph.D. Student & Researcher**
+
+School of Applied Computational Sciences
+
+Meharry Medical College
+
+**Email:** victoria.franklin@mmc.edu
+
+**Last Updated:** October 2025
