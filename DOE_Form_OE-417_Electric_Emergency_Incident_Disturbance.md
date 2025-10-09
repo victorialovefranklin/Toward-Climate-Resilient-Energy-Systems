@@ -90,8 +90,7 @@ DOE-417 data are highly relevant for:
 
 ---
 
-## In Simple Terms
-The **DOE-417 form** is how electric utilities officially tell the U.S. government **when, where, and why major power outages happen** — whether from storms, wildfires, cyberattacks, or equipment failures.  
+The **DOE-417 form** is how electric utilities officially tell the U.S. government **when, where, and why major power outages happen** — whether from storms, wildfires, cyberattacks, or equipment failures. 
 It serves as the **national logbook of significant power disruptions**, helping the DOE and partners **protect, analyze, and strengthen** the nation’s electric grid.
 
 ---
