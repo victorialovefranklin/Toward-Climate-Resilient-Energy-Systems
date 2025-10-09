@@ -1,5 +1,5 @@
 # The Environment for Analysis of Geo-Located Energy Information (EAGLE-I)  
-### Recorded Electricity Outages (2014–2024)
+### Recorded Electricity Outages (2014–2023)
 
 ---
 
@@ -33,7 +33,7 @@ This dataset represents one of the most comprehensive outage monitoring archives
 
 ---
 
-## California Focus (2014–2024)
+## California Focus (2014–2023)
 
 **Primary Source:** EAGLE-I (DOE-CESER / ORNL)  
 **Frequency:** 15-minute intervals  
