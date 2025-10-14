@@ -31,7 +31,7 @@ to build a **holistic resilience framework**.
 
 ---
 
-## ⚙️ Key Contributions
+## Key Contributions
 - **Wildfire–Outage Risk Modeling** — Comparative ML (Logistic Regression, Random Forest, XGBoost) to predict outages and ignition events.  
 - **Geospatial Integration** — Spatial overlays of wildfire zones, biodiversity, and grid infrastructure for resilience planning.  
 - **Digital Twin Prototype** — Decision-support tool combining real-time forecasts with ecological and community vulnerability data.  
@@ -41,7 +41,7 @@ This research supports the **CASPER Lab** and contributes to future **academic p
 
 ---
 
-## 🧩 Problem Statement & Solution
+## Problem Statement & Solution
 
 ### **Problem**
 California’s increasing **wildfires, droughts, and extreme heat** have destabilized the state’s electrical grid.  
@@ -58,7 +58,7 @@ This empowers **utilities, planners, and policymakers** with smarter, greener, a
 
 ---
 
-## 📄 Executive Summary
+## Executive Summary
 Open Access Technology International (OATI) introduced the **first generative and agentic AI platform for the energy sector — OATI Genie™** — in partnership with CAISO (OATI, 2023).  
 
 California leads in **AI-driven smart-grid adoption** (CEC, 2022; CalFire, 2023).  
@@ -68,7 +68,7 @@ This project advances a **RAG + GIS + AI digital-twin framework**, integrating *
 
 ---
 
-## 🧭 Scope of Work
+## Scope of Work
 - **Develop:** A GIS-based decision-support tool for climate-resilient grids.  
 - **Overlay:** Outage and infrastructure layers with:  
   - Wildfire zones  
