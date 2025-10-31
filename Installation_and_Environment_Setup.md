@@ -6,7 +6,7 @@
 **Focus:** GIS • Smart Grid • Machine Learning • Climate & Equity Modeling  
 
 ---
-**File:** install_all_dependencies.py 
+
 ## Purpose
 
 This installation guide provides everything needed to set up the environment for the  
