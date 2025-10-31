@@ -15,21 +15,47 @@
 **Overview:** This repository builds a GIS-enabled Digital Twin integrating power-outage, wildfire, weather, air-quality, and social-equity data for predictive resilience analytics across California.
 The workflow separates data ingestion, staging, feature engineering, and machine-learning modeling for transparency and reproducibility. 
 
+
+# The system supports:
+- **Outage prediction** using machine-learning (RF, XGB, SVR, MLP, ARIMA, LSTM)  
+- **Short- and long-term forecasting** with error/performance assessments  
+- **Streamlit dashboards** for interactive GIS and trend visualization  
+- **RAG-enabled LLM analysis** for natural-language interpretation of datasets
 ---
 
 ![System Architecture](CA_Digital_Twin_Architecture.png)
  
- 
+# Installation: Core Dependencies
+| Group                    | Packages                                                  |
+| ------------------------ | --------------------------------------------------------- |
+| **Core Data**            | pandas • numpy • pyarrow • requests • tqdm                |
+| **Geospatial**           | geopandas • shapely • pyproj • fiona • rtree • contextily |
+| **Modeling**             | scikit-learn • xgboost • statsmodels • pmdarima • prophet |
+| **Visualization**        | matplotlib • plotly • streamlit • pydeck                  |
+| **LLM / RAG (optional)** | openai • langchain • llama-index • chromadb • faiss-cpu   |
+
 
 # Pipeline Modules
+| Module                   | Purpose                                        | Key Tasks                                       | Output                                     |
+| ------------------------ | ---------------------------------------------- | ----------------------------------------------- | ------------------------------------------ |
+| `ingest_local.py`        | Load and standardize static CSV/shapefile data | Read EAGLE-I, EIA, PRISM, CES 4.0, HUD          | `/staging/*.parquet`                       |
+| `ingest_api.py`          | Fetch live data from APIs                      | ODIN, FIRMS, WFIGS, AQS, CalEnviroScreen        | `/data_api_raw/` + `/staging/*.parquet`    |
+| `staging_to_features.py` | Merge API + local into monthly feature tables  | Derive year, month, fips aggregates             | `/features/state_monthly_features.parquet` |
+| `train_models.py`        | Train + compare ML algorithms                  | RF, XGB, SVR, MLP, ARIMA, LSTM with 60/40 split | `/models/model_results_state.csv`          |
+| `rag_answer.py`          | LLM + RAG deployment                           | Retrieve and cite dataset sources               | Markdown answers with citations            |
 
-| **Module**               | **Purpose**                                                           | **Key Tasks**                                     | **Outputs**                                |
-| ------------------------ | --------------------------------------------------------------------- | ------------------------------------------------- | ------------------------------------------ |
-| `ingest_local.py`        | Load and standardize static CSV/shapefile data                        | Read EAGLE-I, EIA, PRISM, CES 4.0 etc.            | `/staging/*.parquet`                       |
-| `ingest_api.py`          | Fetch live data from ODIN, FIRMS, WFIGS, AQS and CalEnviroScreen APIs | Timestamped pulls → normalized format             | `/data_api_raw/` + `/staging/*.parquet`    |
-| `staging_to_features.py` | Merge API + local data into monthly state/county feature tables       | Derive `year`, `month`, `fips`; aggregate metrics | `/features/state_monthly_features.parquet` |
-| `train_models.py`        | Compare ML algorithms for outage prediction                           | Train RF, XGB, SVR, MLP with cross-validation     | `/models/model_results_state.csv`          |
+**Validation & Forecasting Metrics**
+- RMSE: Root Mean Squared Error
+- MAE: Mean Absolute Error
+- R²: Coefficient of Determination
+- MAPE (%): Mean Absolute Percentage Error
 
+**Predictive Model Design**
+- Short-term (1–3 mo): LR, RF, SVR, KNN, MLP, ARIMA
+- Long-term (6–12 mo): RF, XGB, MLP, ARIMA, LSTM
+- Metrics: RMSE, MAE, R², MAPE (60/40 temporal split)
+- Validation: Time-series holdout + transferability tests
+- Forecasting Error Analysis: Cross-model comparisons and feature importance interpretation
 
 # Modeling Design
 | **Goal**                                               | **Approach**                          |
@@ -96,9 +122,13 @@ outage_count, customer_weighted_hours, event_duration
 | **Security & Compliance**         | Protect data & access               | All components                                                                                                                         | IAM, secrets vault, encryption, logging                                                 | Access policies; KMS keys                                   | Continuous                           | Policy violations, key rotation                             | SecOps              | Least privilege; rotate creds                |
 | **Documentation & RACI**          | Shared understanding                | All teams                                                                                                                              | READMEs, SOPs, RACI, runbooks                                                           | `/docs/*` + wiki                                            | Continuous                           | Doc freshness, on-call success                              | PMO                 | Update with each release                     |
 
-
-
+ 
 # Deployment Vision
-- Streamlit Dashboard: interactive maps + ML summaries
-- GitHub Actions: automated daily API refresh and model retrain
-- Data Export: County / State GeoJSON for public web visualizations
+| Component                | Description                                           |
+| ------------------------ | ----------------------------------------------------- |
+| **Streamlit Dashboard**  | Interactive GIS maps + ML trend summaries             |
+| **GitHub Actions CI/CD** | Automate API refresh + model retraining daily         |
+| **Data Export**          | County / State GeoJSON for public web visualizations  |
+| **LLM Integration**      | RAG assistant for interpreting outputs with citations |
+
+
