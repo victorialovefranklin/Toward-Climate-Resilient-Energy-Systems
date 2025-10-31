@@ -58,7 +58,7 @@ The workflow separates data ingestion, staging, feature engineering, and machine
                      +--------------------------+
 
 ![System Architecture](docs/CA_Digital_Twin_Architecture.png)
-
+ 
 
 /content/
 ├── data_local/              # static CSV & shapefile datasets
