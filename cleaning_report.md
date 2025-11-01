@@ -1,8 +1,29 @@
-# Data Cleaning & Imputation Report
+# Toward Climate-Resilient Energy Systems: A Geospatial RAG-Enabled Digital Twin for Equity and Ecosystem Sustainability
+Report submitted to Meharry Medical College of DoE/SRNL Report by Victoria Love Franklin Ph.D. Data Science Pre-Candidate, Meharry Medical College under the guidance of Dr. Lei Qian (Department of Computer Science and Data Science)
+Data Cleaning & Imputation Report
+This report summarizes pre/post cleaning stats and imputation actions for all files.
+
+# Author
+
+**Contact:** victoria.franklin@mmc.edu
+
+**LinkedIn:** https://www.linkedin.com/in/victorialovefranklin/
+
+**GitHub:** https://github.com/officialvickylove](https://github.com/victorialovefranklin
+
+**ORCID:** 0009-0004-8883-767X
+
+**Institution:** Meharry Medical College, School of Applied Computational Sciences, Department of Computer Science and Data Science
+
+
+
+## Data Cleaning & Imputation Report
 
 **Source directory:** `/content`
 
 This report summarizes pre/post cleaning stats and imputation actions for all files.
+
+![System Architecture](missing_cells_pre_vs_post.png)
 
 ## Per-file Summary
 
