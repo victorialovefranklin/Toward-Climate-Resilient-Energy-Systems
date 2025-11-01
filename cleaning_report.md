@@ -4,7 +4,7 @@
 
 This report summarizes pre/post cleaning stats and imputation actions for all files.
 
-![System Architecture](assets/CA_Digital_Twin_Architecture.png)
+![System Architecture](Pre_vs_Post_Cleaning.png)
 
 
 
