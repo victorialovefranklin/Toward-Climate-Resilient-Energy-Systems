@@ -18,8 +18,7 @@ This report summarizes pre/post cleaning stats and imputation actions for all fi
 
 
 ## Data Cleaning & Imputation Report
-
-**Source directory:** `/content`
+ 
 
 This report summarizes pre/post cleaning stats and imputation actions for all files.
 
