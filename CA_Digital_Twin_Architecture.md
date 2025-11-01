@@ -36,99 +36,117 @@ The workflow separates data ingestion, staging, feature engineering, and machine
 
 
 # Pipeline Modules
-| Module                   | Purpose                                        | Key Tasks                                       | Output                                     |
-| ------------------------ | ---------------------------------------------- | ----------------------------------------------- | ------------------------------------------ |
-| `ingest_local.py`        | Load and standardize static CSV/shapefile data | Read EAGLE-I, EIA, PRISM, CES 4.0, HUD          | `/staging/*.parquet`                       |
-| `ingest_api.py`          | Fetch live data from APIs                      | ODIN, FIRMS, WFIGS, AQS, CalEnviroScreen        | `/data_api_raw/` + `/staging/*.parquet`    |
-| `staging_to_features.py` | Merge API + local into monthly feature tables  | Derive year, month, fips aggregates             | `/features/state_monthly_features.parquet` |
-| `train_models.py`        | Train + compare ML algorithms                  | RF, XGB, SVR, MLP, ARIMA, LSTM with 60/40 split | `/models/model_results_state.csv`          |
-| `rag_answer.py`          | LLM + RAG deployment                           | Retrieve and cite dataset sources               | Markdown answers with citations            |
+| **Module**                 | **Purpose**                                       | **Key Tasks**                                                                                                                                                                                   | **Inputs (Local Only)**                          | **Output**                                                                              |
+| -------------------------- | ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ | --------------------------------------------------------------------------------------- |
+| **ingest_local.py**        | Load & standardize **local CSV / shapefile data** | Read and normalize EAGLE-I, EIA-861, PRISM, NOAA StormEvents, CAL FIRE, PSPS, Real-Time/Planned Incidents, CES 4.0, HUD, CalEPA/OEHHA, AQS Ozone & PM (2014–2025), County shapefile & crosswalk | `/content/*.csv`, `/content/tl_2023_us_county.*` | `/staging/*.parquet`                                                                    |
+| **staging_to_features.py** | Merge **local staging data** into feature tables  | Aggregate by `year`, `month`, and `fips`; derive lags (1, 3, 6, 12 months); handle missing values                                                                                               | `/staging/*.parquet`                             | `/features/state_monthly_features.parquet`  `/features/county_monthly_features.parquet` |
+| **train_models.py**        | Train + compare machine-learning models           | Random Forest, XGBoost (if available), SVR, MLP, KNN; temporal 60/40 split; compute metrics & feature importances                                                                               | `/features/*.parquet`                            | `/models/model_results_state.csv`  `/models/model_results_county.csv`                   |
+| **rag_answer.py**          | LLM + RAG over **local metadata**                 | Retrieve & cite dataset sources (local cards / READMEs); generate Markdown answers with citations                                                                                               | `/staging_meta/*.json`, local docs               | Markdown answers + citations                                                            |
+
 
 **Validation & Forecasting Metrics**
-- RMSE: Root Mean Squared Error
-- MAE: Mean Absolute Error
-- R²: Coefficient of Determination
-- MAPE (%): Mean Absolute Percentage Error
+| **Metric**   | **Meaning**                    |
+| ------------ | ------------------------------ |
+| **RMSE**     | Root Mean Squared Error        |
+| **MAE**      | Mean Absolute Error            |
+| **R²**       | Coefficient of Determination   |
+| **MAPE (%)** | Mean Absolute Percentage Error |
+
 
 **Predictive Model Design**
-- Short-term (1–3 mo): LR, RF, SVR, KNN, MLP, ARIMA
-- Long-term (6–12 mo): RF, XGB, MLP, ARIMA, LSTM
-- Metrics: RMSE, MAE, R², MAPE (60/40 temporal split)
-- Validation: Time-series holdout + transferability tests
-- Forecasting Error Analysis: Cross-model comparisons and feature importance interpretation
+| **Horizon**             | **Algorithms**               | **Validation & Metrics**                   | **Description**                                                                   |
+| ----------------------- | ---------------------------- | ------------------------------------------ | --------------------------------------------------------------------------------- |
+| **Short-Term (1–3 mo)** | LR, RF, SVR, KNN, MLP, ARIMA | RMSE, MAE, R², MAPE (60/40 temporal split) | Operational forecasting of near-term outage risk, intensity, and customer impact. |
+| **Long-Term (6–12 mo)** | RF, XGB, MLP, ARIMA, LSTM    | RMSE, MAE, R², MAPE (rolling holdout)      | Strategic modeling of seasonal/climate and infrastructure resilience trends.      |
 
-# Modeling Design
-| **Goal**                                               | **Approach**                          |
-| ------------------------------------------------------ | ------------------------------------- |
-| Predict outage magnitude / duration                    | Regression (RandomForest, XGBoost)    |
-| Classify outage cause (weather vs policy vs equipment) | Multiclass classification             |
-| Interpret feature importance                           | SHAP + Permutation Importance         |
-| Forecast resilience scenarios                          | Prophet / ARIMA time-series extension |
+
+**Validation:**
+- Time-series holdout (temporal split).
+- Transferability tests across counties / time windows.
+- Forecasting Error Analysis:
+- Cross-model comparison.
+- Feature importance & SHAP interpretation.
+
+# Modeling Design Summary
+| **Goal**                                               | **Approach**                           |
+| ------------------------------------------------------ | -------------------------------------- |
+| Predict outage magnitude / duration                    | Regression (Random Forest, XGBoost)    |
+| Classify outage cause (weather vs policy vs equipment) | Multiclass classification              |
+| Interpret key drivers                                  | SHAP + Permutation Importance          |
+| Forecast resilience scenarios                          | Prophet / ARIMA time-series extensions |
 
 
 # Target Variables:
-outage_count, customer_weighted_hours, event_duration
-**Feature Families:**
-- Meteorological (NOAA, PRISM)
-- Wildfire (CAL FIRE, FIRMS, POST-FIRE)
-- Air Quality (EPA AQS)
-- Socio-economic (CES 4.0, HUD)
-- Policy (PSPS, Planned vs Unplanned)
+**outage_count, customer_weighted_hours, event_duration**
+**Feature Families** 
+- Meteorological: NOAA StormEvents, PRISM Norms
+- Wildfire: CAL FIRE, Post-Fire Dataset
+- Air Quality: EPA AQS (Ozone & PM 2014–2025)
+- Socio-Economic: CalEnviroScreen 4.0, HUD LAI
+- Policy: PSPS, Planned vs Unplanned Outages
+  
 
 # Data Refresh Cadence
-| **Source**          | **Update Cycle**  | **Method**           |
-| ------------------- | ----------------- | -------------------- |
-| ODIN Outages        | Daily             | API pull             |
-| WFIGS Incidents     | Daily             | ArcGIS REST → CSV    |
-| NASA FIRMS          | Daily             | Area API (BBOX CA)   |
-| EPA AQS             | Weekly            | API (batch state=06) |
-| NOAA Storm Events   | Quarterly         | FTP download         |
-| EAGLE-I / EIA-861   | Annual            | Local CSV refresh    |
-| CalEnviroScreen 4.0 | Static / Periodic | CSV + ArcGIS API     |
+| **Source**                     | **Update Cycle**      | **Method**                        |
+| ------------------------------ | --------------------- | --------------------------------- |
+| EAGLE-I / EIA-861              | Annual                | Local CSV refresh                 |
+| CAL FIRE Incidents             | Annual / Quarterly    | Local CSV (from internal archive) |
+| NOAA Storm Events              | Quarterly             | FTP batch CSV (CA subset)         |
+| PRISM Norms                    | Static (30-yr)        | Local CSV                         |
+| EPA AQS (Ozone & PM 2014–2025) | Periodic (as updated) | Local CSV upload                  |
+| CalEnviroScreen 4.0            | Static / Periodic     | Local CSV                         |
+| HUD LAI v3                     | Annual                | Local CSV                         |
+| CalEPA / OEHHA                 | Static                | Local CSV                         |
+| County Shapefiles & Crosswalks | Static                | Local shapefile + CSV join        |
+
 
 
 # Development Conventions
-- Language: Python 3.12+
-- Core Libraries: pandas, geopandas, requests, scikit-learn, xgboost, prophet
-- Visualization: matplotlib, plotly, streamlit, leafmap
-- Data Formats: CSV ↔ Parquet ↔ GeoJSON ↔ Shapefile
-- Version Control: Git LFS for large data assets (>50 MB)
-- Environment: .env with API keys (AQS_API_KEY, AQS_EMAIL, FIRMS_MAP_KEY)
+| **Aspect**          | **Standard**                                                |
+| ------------------- | ----------------------------------------------------------- |
+| **Language**        | Python 3.12 +                                               |
+| **Core Libraries**  | `pandas`, `geopandas`, `scikit-learn`, `xgboost`, `prophet` |
+| **Visualization**   | `matplotlib`, `plotly`, `streamlit`, `leafmap`              |
+| **Data Formats**    | CSV ↔ Parquet ↔ GeoJSON ↔ Shapefile                         |
+| **Version Control** | Git LFS for > 50 MB files                                   |
+| **Environment**     | `.env` for paths only (no API keys needed in local mode)    |
+
+
 
 # Machine-Learning Outputs
-| **Output Artifact**              | **Contents**                 | **Example Use**             |
-| -------------------------------- | ---------------------------- | --------------------------- |
-| `model_results_state.csv`        | RMSE, MAE, R² for each model | Model comparison table      |
-| `feature_importance_RF.csv`      | SHAP values + ranking        | Interpretability plots      |
-| `forecast_outage_trends.csv`     | 12-month forecasts           | Dashboard integration       |
-| `state_monthly_features.parquet` | Unified feature set          | Reproducible training input |
+| **Artifact**                     | **Contents**                 | **Example Use**        |
+| -------------------------------- | ---------------------------- | ---------------------- |
+| `model_results_state.csv`        | RMSE, MAE, R² for each model | Model comparison table |
+| `feature_importance_RF.csv`      | SHAP + Permutation scores    | Interpretability plots |
+| `forecast_outage_trends.csv`     | 12-month forecasts           | Dashboard integration  |
+| `state_monthly_features.parquet` | Unified training feature set | Reproducible ML inputs |
+
 
 
 # Digital Twin Architecture Plan (Two Horizons: Short-Term + Long-Term)
-
-| Layer / Module                    | Purpose                             | Key Inputs                                                                                                                             | Core Process / Methods                                                                  | Outputs & Artifacts                                         | Update Cadence                       | Metrics (QoS + Model)                                       | Owner / Role        | Notes                                        |
-| --------------------------------- | ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ----------------------------------------------------------- | ------------------------------------ | ----------------------------------------------------------- | ------------------- | -------------------------------------------- |
-| **Data Ingestion (ETL)**          | Pull raw data reliably              | EAGLE-I outages, NOAA/NWS weather & alerts, fire danger/fuel moisture, PSPS, EIA-861, census/SDOH, CalEnviroScreen, grids & shapefiles | Batch + streaming pipelines; schema enforcement; late-arriving data handling            | `/data/raw/*` parquet/csv + ingestion logs                  | Hourly (ops); Monthly (planning)     | Pipeline success %, latency, data completeness              | Data Eng            | Use data contracts; version schemas          |
-| **Data Quality (DQ)**             | Validate & cleanse                  | Raw feeds from ETL                                                                                                                     | Null/dup checks, range rules, spatial/temporal joins, de-biasing, outlier flags         | DQ reports; curated `/data/clean/*`                         | With each ingest                     | % valid rows, rule pass rate, anomaly counts                | Data Eng + QA       | Store DQ results for audits                  |
-| **Feature Store (Shared)**        | Single source of truth for features | Cleaned datasets; geospatial joins                                                                                                     | Windowed features (lags, rolling stats), weather lead vars, vegetation, equity indices  | `/features/{granularity}/{horizon}.parquet`                 | Hourly/daily (short), Monthly (long) | Feature freshness, drift (PSI), coverage                    | MLOps               | Keep identical feature names across horizons |
-| **Short-Term Modeling (Ops)**     | 1–30 day outage risk & impact       | High-freq weather/alerts, recent outages, load                                                                                         | Baselines (ARIMA/Prophet), XGBoost; binary risk & regression (cust. affected, duration) | Model registry, `predictions_daily.parquet`, SHAP summaries | Daily (or hourly before events)      | RMSE/MAE, AUPRC/Brier, alert precision/recall, latency      | Data Sci (Ops)      | Keep one primary model in v1                 |
-| **Long-Term Modeling (Strategy)** | 1–10+ year resilience outlook       | Monthly/annual aggregates, policy & infra covariates, climate scenarios                                                                | XGBoost/RF + scenario generator (P10/P50/P90), Monte Carlo sensitivity                  | `projections_annual.parquet`, scenario plots, model cards   | Quarterly refresh                    | RMSE/MAE/R² (time-blocked CV), scenario spread, sensitivity | Data Sci (Strategy) | Tie to investment planning                   |
-| **Simulation & What-If (DT)**     | Interventions + policy testing      | Models + configurable levers (vegetation, AMI, hardening)                                                                              | Parametric sims; counterfactuals; cost-benefit                                          | `sim_runs/*.parquet`, dashboards, CBA tables                | On demand                            | Benefit-cost ratio, avoided outage-hours, equity lift       | Analytics Eng       | Keep levers simple in v1                     |
-| **Geospatial Services**           | Spatialize risk & exposure          | Features + tract/county shapes                                                                                                         | Tiling, hotspot (Getis-Ord), cluster/regression maps                                    | Vector tiles, geojson layers, map services                  | With predictions                     | Tile build time, map response time                          | GIS Eng             | Pre-compute heavy tiles                      |
-| **Dashboards (Ops)**              | Live situational awareness          | Short-term preds, alerts, DQ status                                                                                                    | Ops UI (risk next 7 days), SHAP top drivers, alerting rules                             | Web app; PDF daily brief                                    | Daily                                | Uptime, alert lead time, user actions                       | Prod Eng + Ops      | Keep <3 key charts                           |
-| **Dashboards (Strategy)**         | Planning & equity view              | Long-term projections, scenarios                                                                                                       | Trend panels, scenario toggles, tract equity overlay                                    | Web app; quarterly planning brief                           | Quarterly                            | Decision adoption, ROI of actions                           | Prod Eng + Planning | Link to budget planner                       |
-| **Alerting & Workflow**           | Turn risk into action               | Short-term risk, thresholds                                                                                                            | Rules engine; pagers/email; ticket creation                                             | Incident tickets; alert logs                                | Near-real time                       | False-alarm rate, time-to-ack                               | Ops                 | Start with simple thresholds                 |
-| **MLOps & Governance**            | Repro, audit, safety                | Code, data, models, lineage                                                                                                            | Model registry, CI/CD, data lineage, model cards                                        | Versioned artifacts; audit trails                           | Continuous                           | Drift/PSI, rollback time, test coverage                     | MLOps               | Enforce approvals for prod                   |
-| **Security & Compliance**         | Protect data & access               | All components                                                                                                                         | IAM, secrets vault, encryption, logging                                                 | Access policies; KMS keys                                   | Continuous                           | Policy violations, key rotation                             | SecOps              | Least privilege; rotate creds                |
-| **Documentation & RACI**          | Shared understanding                | All teams                                                                                                                              | READMEs, SOPs, RACI, runbooks                                                           | `/docs/*` + wiki                                            | Continuous                           | Doc freshness, on-call success                              | PMO                 | Update with each release                     |
+| **Layer / Module**                | **Purpose**                           | **Key Inputs**                                      | **Core Process / Methods**                    | **Outputs & Artifacts**               | **Update Cadence** | **Metrics (QoS + Model)**      | **Owner / Role**    | **Notes**                              |
+| --------------------------------- | ------------------------------------- | --------------------------------------------------- | --------------------------------------------- | ------------------------------------- | ------------------ | ------------------------------ | ------------------- | -------------------------------------- |
+| **Data Ingestion (ETL)**          | Load & validate local files           | EAGLE-I, NOAA, PRISM, CAL FIRE, PSPS, EIA-861, SDOH | Batch load; schema enforcement; file tracking | `/data/raw/*`, logs                   | Monthly            | Pipeline success %, latency    | Data Engineering    | Use schema contracts + version hashes  |
+| **Data Quality (DQ)**             | Validate and cleanse                  | Raw staging files                                   | Null / dup checks, range tests, spatial joins | `/data/clean/*`, DQ reports           | Each ingest        | % valid rows, rule pass rate   | Data Eng + QA       | Archive DQ reports for audit           |
+| **Feature Store**                 | Shared feature repository             | Cleaned parquet tables                              | Monthly aggregations, lags, rolling stats     | `/features/{level}/{horizon}.parquet` | Monthly            | Feature freshness, drift (PSI) | MLOps               | Keep schema stable across horizons     |
+| **Short-Term Modeling (Ops)**     | 1–30 day forecasts                    | Weather, alerts, recent outages                     | ARIMA, RF, XGB, Prophet                       | `predictions_daily.parquet`           | Daily              | RMSE, MAE, alert precision     | Data Sci (Ops)      | Core operational risk model            |
+| **Long-Term Modeling (Strategy)** | 6–12 mo+ resilience projections       | Aggregates + policy covariates                      | XGB / RF scenario models, Monte Carlo         | `projections_annual.parquet`          | Quarterly          | RMSE, R², scenario spread      | Data Sci (Strategy) | Tie to planning & investment decisions |
+| **Simulation & What-If**          | Test policy or infra changes          | Models + user inputs                                | Counterfactual simulation / CBA               | `sim_runs/*.parquet`                  | On demand          | Benefit-cost ratio (BCR)       | Analytics Eng       | Keep first iteration simple            |
+| **Geospatial Services**           | Spatial risk mapping                  | Features + county/tract shapes                      | Hotspot / clustering maps                     | Vector tiles + GeoJSON                | With predictions   | Tile build time, map latency   | GIS Eng             | Pre-compute heavy tiles                |
+| **Dashboards (Ops)**              | Real-time situational awareness       | Short-term preds + alerts                           | Streamlit UI with SHAP drivers                | Web app + PDF brief                   | Daily              | Uptime, lead time              | Prod Eng + Ops      | ≤ 3 core charts per view               |
+| **Dashboards (Strategy)**         | Long-term planning view               | Scenarios + equity layers                           | Trend panels + scenario toggles               | Web app + quarterly brief             | Quarterly          | ROI of actions, decision use   | Prod Eng + Planning | Connect to budget planner              |
+| **Alerting & Workflow**           | Turn predictions into actions         | Short-term alerts / thresholds                      | Rules engine + ticketing                      | Alerts + logs                         | Near-real-time     | False alarm rate, ack time     | Ops                 | Start simple; iterate                  |
+| **MLOps & Governance**            | Ensure reproducibility & traceability | Code + data + models                                | Registry + CI/CD + lineage tracking           | Versioned artifacts + audit logs      | Continuous         | Drift (PSI), rollback time     | MLOps               | Enforce review / approval gates        |
+| **Security & Compliance**         | Protect data access                   | All components                                      | IAM, encryption, audit logs                   | Access policies + KMS keys            | Continuous         | Violations, key rotation       | SecOps              | Apply least privilege                  |
+| **Documentation & RACI**          | Shared understanding                  | All teams                                           | READMEs, runbooks, RACI matrix                | `/docs/*`, wiki                       | Continuous         | Doc freshness, handoff rate    | PMO                 | Update each release                    |
 
  
 # Deployment Vision
-| Component                | Description                                           |
-| ------------------------ | ----------------------------------------------------- |
-| **Streamlit Dashboard**  | Interactive GIS maps + ML trend summaries             |
-| **GitHub Actions CI/CD** | Automate API refresh + model retraining daily         |
-| **Data Export**          | County / State GeoJSON for public web visualizations  |
-| **LLM Integration**      | RAG assistant for interpreting outputs with citations |
+| **Component**            | **Description**                                             |
+| ------------------------ | ----------------------------------------------------------- |
+| **Streamlit Dashboard**  | Interactive GIS maps + ML trend summaries                   |
+| **GitHub Actions CI/CD** | Automate model training + artifact publishing               |
+| **Data Exports**         | County / State GeoJSON for public dashboards                |
+| **LLM Integration**      | Local RAG assistant for interpreting outputs with citations |
 
 
