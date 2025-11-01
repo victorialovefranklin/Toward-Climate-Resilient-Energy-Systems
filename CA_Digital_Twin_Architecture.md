@@ -23,7 +23,15 @@ The workflow separates data ingestion, staging, feature engineering, and machine
 - **RAG-enabled LLM analysis** for natural-language interpretation of datasets
 ---
 
-![System Architecture](CA_Digital_Twin_Architecture.png)
+# Key Layers in the Digital Twin
+| **Layer**                    | **Purpose**                                       | **Representative Inputs**                            | **Outputs**                                                                             |
+| ---------------------------- | ------------------------------------------------- | ---------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| **Data Ingestion (ETL)**     | Read, validate, and standardize all local sources | EAGLE-I, EIA-861, PRISM, CAL FIRE, AQS, HUD, CES 4.0 | `/staging/*.parquet`                                                                    |
+| **Feature Store**            | Centralized feature tables (monthly, lagged)      | Staged parquet data                                  | `/features/state_monthly_features.parquet`  `/features/county_monthly_features.parquet` |
+| **Modeling & Forecasting**   | Predict outage risk, duration, and drivers        | Feature tables                                       | `/models/model_results_*.csv`, importances                                              |
+| **Simulation & Planning**    | Scenario testing and resilience assessment        | Model outputs + user inputs                          | `sim_runs/*.parquet`, dashboards                                                        |
+| **Visualization & Delivery** | Interactive dashboards & reports                  | Forecasts + GeoJSON layers                           | Streamlit app, planning briefs                                                          |
+
  
 # Installation: Core Dependencies
 | Group                    | Packages                                                  |
