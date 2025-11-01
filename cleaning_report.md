@@ -4,6 +4,10 @@
 
 This report summarizes pre/post cleaning stats and imputation actions for all files.
 
+![System Architecture](assets/CA_Digital_Twin_Architecture.png)
+
+
+
 ## Per-file Summary
 
 | file                                       |   rows_pre |   cols_pre |   rows_post |   cols_post |   dupes_pre |   dupes_post |   na_cells_pre |   na_cells_post |   imputed_cells |
